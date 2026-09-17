@@ -29,6 +29,8 @@ Objektif utama projek adalah untuk:
 | HTML | Struktur aplikasi web |
 | CSS | Reka bentuk dan antaramuka |
 | JavaScript | Logik aplikasi dan proses inferens |
+| FastAPI | Framework Python untuk membina backend/API jika diperlukan |
+| Pydantic | Validasi dan pengurusan data request/response bagi backend FastAPI |
 | Git | Version control |
 | GitHub | Repository, dokumentasi dan deployment |
 | GitHub Pages | Deployment aplikasi web |
@@ -116,7 +118,7 @@ User
         User
 ```
 
-Model digunakan secara terus dalam browser menggunakan TensorFlow.js. Oleh itu, aplikasi tidak memerlukan backend API untuk proses inferens asas. Kaedah ini juga membolehkan model dimuatkan dan dijalankan pada sisi pengguna (*client-side*).
+Model digunakan secara terus dalam browser menggunakan TensorFlow.js. Oleh itu, aplikasi semasa tidak memerlukan backend API untuk proses inferens asas. Kaedah ini membolehkan model dimuatkan dan dijalankan pada sisi pengguna (*client-side*).
 
 ## 8. Fungsi Aplikasi
 
@@ -146,7 +148,49 @@ Aplikasi memberikan indikator ringkas bagi membantu pengguna memahami keputusan,
 
 Pengguna boleh menetapkan semula input dan menjalankan prediction baharu.
 
-## 9. Training dan Eksperimen Model
+## 9. FastAPI dan Pydantic
+
+**FastAPI** ialah framework Python yang boleh digunakan untuk membina backend web dan API bagi aplikasi AI. Dalam projek image classification, FastAPI boleh bertindak sebagai pengantara antara aplikasi pengguna dengan model AI. Contohnya, aplikasi boleh menghantar fail imej kepada endpoint `POST /predict`, kemudian backend memproses imej menggunakan model dan mengembalikan keputusan prediction serta confidence dalam bentuk JSON.
+
+Contoh aliran menggunakan FastAPI:
+
+```text
+User / Web App
+      │
+      ▼
+   Image Input
+      │
+      ▼
+POST /predict
+      │
+      ▼
+ FastAPI Backend
+      │
+      ▼
+ AI Classification Model
+      │
+      ▼
+Prediction + Confidence
+      │
+      ▼
+   JSON Response
+      │
+      ▼
+     Web App
+```
+
+**Pydantic** pula digunakan bersama FastAPI untuk mentakrif dan mengesahkan struktur data yang dihantar atau diterima oleh API. Contohnya, keputusan inferens boleh distrukturkan sebagai:
+
+```json
+{
+  "prediction": "Class Name",
+  "confidence": 0.94
+}
+```
+
+Walaupun FA DKB3263 menerangkan penggunaan **FastAPI + Pydantic jika backend Python diperlukan**, projek semasa menggunakan pendekatan **browser-based TensorFlow.js**. Model Teachable Machine dimuatkan terus dalam browser dan inferens dilakukan pada sisi pengguna. Oleh itu, FastAPI/Pydantic tidak diperlukan untuk aliran inferens semasa. Walau bagaimanapun, penerangan FastAPI dan Pydantic dimasukkan dalam dokumentasi untuk menunjukkan alternatif deployment backend Python yang ditetapkan dalam FA.
+
+## 10. Training dan Eksperimen Model
 
 Proses pembangunan model dilakukan menggunakan Google Teachable Machine:
 
@@ -165,7 +209,7 @@ Keputusan sebenar bagi kedua-dua eksperimen direkodkan dalam:
 
 - [`docs/experiments.md`](docs/experiments.md)
 
-## 10. Testing dan Evaluation
+## 11. Testing dan Evaluation
 
 Model perlu diuji menggunakan imej baharu yang tidak digunakan semasa training. Setiap ujian direkodkan berdasarkan:
 
@@ -182,7 +226,7 @@ Rekod testing disediakan dalam:
 
 Nilai accuracy, confidence dan jumlah sampel hendaklah diisi berdasarkan keputusan ujian sebenar dan bukan nilai rekaan.
 
-## 11. Dataset dan Data Preparation
+## 12. Dataset dan Data Preparation
 
 Dokumentasi dataset disediakan dalam:
 
@@ -198,7 +242,7 @@ Dataset perlu mempunyai sekurang-kurangnya tiga kelas dan sebaik-baiknya mempuny
 
 Sumber dataset dan jumlah imej sebenar setiap kelas akan direkodkan selepas dataset akhir disahkan.
 
-## 12. Deployment
+## 13. Deployment
 
 Aplikasi ini direka sebagai aplikasi web statik dan boleh dideploy menggunakan **GitHub Pages**.
 
@@ -214,7 +258,7 @@ Untuk deployment:
 
 Selepas deployment berjaya, aplikasi boleh digunakan melalui browser tanpa perlu menjalankan server Python untuk inferens browser-based ini.
 
-## 13. GitHub Version Control
+## 14. GitHub Version Control
 
 GitHub digunakan untuk menyimpan kod, dokumentasi dan rekod perubahan projek. Repository menggunakan beberapa commit bermakna untuk menunjukkan proses pembangunan secara berperingkat.
 
@@ -231,7 +275,7 @@ Antara perubahan yang didokumentasikan termasuk:
 **Repository:**
 https://github.com/m-8974775-ui/AI-Image-Classification-DKB3263
 
-## 14. AI Code Assistant
+## 15. AI Code Assistant
 
 AI Code Assistant digunakan sebagai bantuan dalam proses pembangunan, seperti menjana fungsi, debugging, penambahbaikan kod dan dokumentasi.
 
@@ -249,7 +293,7 @@ Bukti penggunaan direkodkan dalam:
 
 AI-generated code tetap perlu disemak, difahami dan diuji oleh pelajar sebelum digunakan.
 
-## 15. Etika, Keselamatan dan Integriti
+## 16. Etika, Keselamatan dan Integriti
 
 Projek mematuhi prinsip asas berikut:
 
@@ -260,7 +304,7 @@ Projek mematuhi prinsip asas berikut:
 - Kod yang dijana AI perlu disemak dan diuji.
 - Laporan hendaklah menggambarkan sumbangan sebenar pelajar.
 
-## 16. Dokumentasi Projek
+## 17. Dokumentasi Projek
 
 Dokumen sokongan projek boleh dirujuk melalui folder `docs`:
 
@@ -271,7 +315,7 @@ Dokumen sokongan projek boleh dirujuk melalui folder `docs`:
 | [Testing](docs/testing.md) | Testing, confidence dan error analysis |
 | [AI Code Assistant](docs/ai-code-assistant.md) | Bukti penggunaan AI Code Assistant |
 
-## 17. Status Projek
+## 18. Status Projek
 
 | Komponen | Status |
 |---|---|
@@ -292,7 +336,7 @@ Dokumen sokongan projek boleh dirujuk melalui folder `docs`:
 | Actual experiment results | To be recorded from real testing |
 | Actual testing results | To be recorded from real testing |
 
-## 18. Important Notes
+## 19. Important Notes
 
 Repository ini menyediakan struktur aplikasi dan dokumentasi projek. **Keputusan sebenar seperti nama kelas, jumlah imej, confidence, accuracy, keputusan eksperimen dan kesilapan model hendaklah dimasukkan berdasarkan model serta testing sebenar.**
 
@@ -304,4 +348,5 @@ Ini penting supaya laporan dan repository menggambarkan keputusan projek yang se
 **Project:** AI Image Classification & Application Deployment  
 **Platform:** Google Teachable Machine  
 **Application:** HTML / CSS / JavaScript / TensorFlow.js  
+**Optional Backend:** FastAPI / Pydantic  
 **Version Control & Deployment:** GitHub / GitHub Pages
